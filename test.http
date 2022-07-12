@@ -1,0 +1,30 @@
+### Predict a disaster
+POST http://localhost:8000/predict
+Content-Type: application/json
+
+{
+  "text": "Heard about #earthquake is different cities, stay safe everyone."
+}
+
+### Predict a non disaster
+POST http://localhost:8000/predict
+Content-Type: application/json
+
+{
+  "text": "Hey! How are you? olá"
+}
+
+### Get MLflow registered model
+GET http://localhost:5000/api/2.0/preview/mlflow/registered-models/get?name=nlp-tweets
+
+### Get Metaflow flows using metadata service
+GET http://localhost:8080/flows
+
+### Get Metaflow flows using ui backend
+GET http://localhost:8083/api/flows
+
+### Metaflow schema migration service
+GET http://localhost:8082/db_schema_status
+
+### Hitting the ui backend with haproxy (metadata route same as metadata service)
+GET http://localhost:4000/api/metadata/flows

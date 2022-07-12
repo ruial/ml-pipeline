@@ -1,0 +1,8 @@
+{
+  "METAFLOW_S3_ENDPOINT_URL": "http://localhost:9100",
+  "METAFLOW_DATASTORE_SYSROOT_S3": "s3://ml-bucket/metaflow",
+  "METAFLOW_DATATOOLS_SYSROOT_S3": "s3://ml-bucket/data",
+  "METAFLOW_DEFAULT_DATASTORE": "s3",
+  "METAFLOW_DEFAULT_METADATA": "service",
+  "METAFLOW_SERVICE_URL": "http://localhost:8080"
+}

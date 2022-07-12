@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "ml-pipeline"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+metaflow = "^2.7.1"
+scikit-learn = "^1.1.1"
+pandas = "^1.4.3"
+xgboost = "^1.6.1"
+matplotlib = "^3.5.2"
+mlflow = "1.26.1"
+fastapi = "^0.78.0"
+uvicorn = {extras = ["standard"], version = "^0.18.2"}
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+jupyter = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

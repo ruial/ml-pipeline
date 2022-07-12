@@ -1,0 +1,122 @@
+services:
+  mlflow:
+    build: docker/mlflow
+    container_name: mlflow
+    ports:
+      - 5000:5000
+    environment:
+      - BACKEND=postgresql://postgres:postgres@db/mlflow
+      - BUCKET_PATH=s3://ml-bucket/mlflow
+      - MLFLOW_S3_ENDPOINT_URL=http://minio:9100
+    volumes:
+      - ./docker/aws_credentials:/root/.aws/credentials
+    depends_on:
+      - db
+      - minio
+  ui_static:
+    image: public.ecr.aws/outerbounds/metaflow_ui:v1.1.2
+    container_name: ui_static
+    environment:
+      METAFLOW_SERVICE: http://localhost:4000/api/
+      # METAFLOW_SERVICE: http://localhost:8083/
+    ports:
+      - "3000:3000"
+    depends_on:
+      - ui_backend
+  ui_backend:
+    image: netflixoss/metaflow_metadata_service:v2.2.4
+    container_name: ui_backend
+    ports:
+      - "8083:8083"
+    environment:
+      - PATH_PREFIX=/api/
+      - MF_METADATA_DB_HOST=db
+      - MF_METADATA_DB_PORT=5432
+      - MF_METADATA_DB_USER=postgres
+      - MF_METADATA_DB_PSWD=postgres
+      - MF_METADATA_DB_NAME=postgres
+      - METAFLOW_SERVICE_URL=http://metadata:8080
+      # s3 stuff required for backend
+      - METAFLOW_S3_ENDPOINT_URL=http://minio:9100
+      - MF_DATASTORE_ROOT=s3://ml-bucket/metaflow
+      - METAFLOW_DATASTORE_SYSROOT_S3=s3://ml-bucket/metaflow
+      - METAFLOW_DEFAULT_DATASTORE=s3
+      - METAFLOW_DEFAULT_METADATA=service
+    entrypoint: "/opt/latest/bin/python3 -m services.ui_backend_service.ui_server"
+    volumes:
+      - ./docker/aws_credentials:/root/.aws/credentials
+    depends_on:
+      - metadata
+  metadata:
+    image: netflixoss/metaflow_metadata_service:v2.2.4
+    container_name: metadata_service
+    ports:
+      - "8082:8082"
+      - "8080:8080"
+    environment:
+      - MF_METADATA_DB_HOST=db
+      - MF_METADATA_DB_PORT=5432
+      - MF_METADATA_DB_USER=postgres
+      - MF_METADATA_DB_PSWD=postgres
+      - MF_METADATA_DB_NAME=postgres
+      - MF_MIGRATION_ENDPOINTS_ENABLED=1
+      - MF_METADATA_PORT=8080
+      - MF_METADATA_HOST=0.0.0.0
+      - MF_MIGRATION_PORT=8082
+      # s3 stuff required for metadata
+      - MF_STS_ENDPOINT=http://minio:9100
+      - MF_USER_IAM_ROLE=NANANANANANANABATMAN
+    volumes:
+      - ./docker/aws_credentials:/root/.aws/credentials
+    depends_on:
+      - db
+      - minio
+  db:
+    image: postgres:11
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/postgres-init:/docker-entrypoint-initdb.d
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8090:8080"
+  minio:
+    container_name: minio
+    command: server /data --address :9100 --console-address ":9101"
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=s3secret
+    image: quay.io/minio/minio:latest
+    ports:
+      - '9100:9100'
+      - '9101:9101'
+  mc:
+    container_name: mc
+    build: docker/mc
+    environment:
+      - MINIO_HOST=http://minio:9100
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=s3secret
+      - BUCKET=ml-bucket
+    volumes:
+      - ./docker/datasets:/datasets
+    depends_on:
+      - minio
+  # Need haproxy to avoid CORS issue, otherwise would need open chrome in insecure mode
+  # https://stackoverflow.com/questions/3102819/disable-same-origin-policy-in-chrome
+  haproxy:
+    container_name: haproxy
+    image: haproxy:2.6.1
+    ports:
+      - '4000:4000'
+      - '8404:8404'
+    volumes:
+      - ./docker/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    depends_on:
+      - ui_static
