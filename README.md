@@ -7,19 +7,21 @@ A text classifier (Kaggle disaster tweets) training workflow and prediction API 
 ## Setup
 
 ```sh
-# install poetry for package management and make sure it is added to your path
+# install poetry for package management
 pip install poetry
-export PATH="$HOME/.local/bin:$PATH"
-# after cloning the repo
+# and make sure it is added to your PATH, which depends on the system
+# e.g.: export PATH="$HOME/.local/bin:$PATH"
+# then install the dependencies and get a shell
 poetry install
+poetry shell
 
 # some examples of poetry commands
 # poetry new ml-pipeline
-# poetry shell
 # poetry add metaflow scikit-learn pandas
 # poetry add -D jupyter
-# poetry show -v
 # poetry run pytest
+# poetry show -v
+# poetry env remove python
 ```
 
 ## Running
