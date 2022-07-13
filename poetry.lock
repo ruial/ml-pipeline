@@ -872,7 +872,7 @@ python-versions = "*"
 
 [[package]]
 name = "mlflow"
-version = "1.26.1"
+version = "1.27.0"
 description = "MLflow: A Platform for ML Development and Productionization"
 category = "main"
 optional = false
@@ -899,13 +899,14 @@ pyyaml = ">=5.1"
 querystring-parser = "*"
 requests = ">=2.17.3"
 scipy = "*"
-sqlalchemy = "*"
+sqlalchemy = ">=1.4.0"
 sqlparse = ">=0.3.1"
 waitress = {version = "*", markers = "platform_system == \"Windows\""}
 
 [package.extras]
 aliyun-oss = ["aliyunstoreplugin"]
 extras = ["scikit-learn", "pyarrow", "boto3", "google-cloud-storage (>=1.30.0)", "azureml-core (>=1.2.0)", "pysftp", "kubernetes", "mlserver (>=0.5.3)", "mlserver-mlflow (>=0.5.3)", "virtualenv"]
+pipelines = ["scikit-learn (>=1.0)", "pyarrow (>=7.0)", "shap (>=0.40)", "pandas-profiling (>=3.1)", "ipython (>=7.0)", "markdown (>=3.3)", "Jinja2 (>=3.0)"]
 sqlserver = ["mlflow-dbstore"]
 
 [[package]]
@@ -1912,7 +1913,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "fefb715635659a4d97447dec86b32670348cd3bc52becdc979d335a00f850ead"
+content-hash = "0bcb3ab4df0d5fdd5dff4deff49fada4b0d866b41e59031f08d3733ecbcbb20f"
 
 [metadata.files]
 alembic = []

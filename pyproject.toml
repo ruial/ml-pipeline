@@ -11,7 +11,7 @@ scikit-learn = "^1.1.1"
 pandas = "^1.4.3"
 xgboost = "^1.6.1"
 matplotlib = "^3.5.2"
-mlflow = "1.26.1"
+mlflow = "^1.27.0"
 fastapi = "^0.78.0"
 uvicorn = {extras = ["standard"], version = "^0.18.2"}
 
