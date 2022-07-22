@@ -2,7 +2,9 @@
 
 A local [Metaflow](https://metaflow.org) and [MLflow](https://mlflow.org) Docker environment to experiment with machine learning pipelines.
 
-A text classifier (Kaggle disaster tweets) training workflow and prediction API are provided as an example.
+In addition, a text classifier (Kaggle disaster tweets) training workflow and prediction API are provided as examples.
+
+You can get a Terraform module to deploy Metaflow on AWS in [here](https://github.com/outerbounds/terraform-aws-metaflow).
 
 ## Setup
 
