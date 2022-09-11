@@ -11,7 +11,7 @@ POST http://localhost:8000/predict
 Content-Type: application/json
 
 {
-  "text": "Hey! How are you? olá"
+  "text": "Hey! HOW are you? olá"
 }
 
 ### Get MLflow registered model
